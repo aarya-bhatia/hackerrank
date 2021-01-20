@@ -35,6 +35,10 @@ public class BSTNode<E extends Comparable<E>> implements Comparable<BSTNode<E>> 
         this.right = right;
     }
 
+    public boolean hasLeft() { return this.left != null; }
+
+    public boolean hasRight() { return this.right != null; }
+
     @Override
     public int compareTo(BSTNode<E> o) {
         return data.compareTo(o.data);
@@ -42,6 +46,6 @@ public class BSTNode<E extends Comparable<E>> implements Comparable<BSTNode<E>> 
 
     @Override
     public String toString() {
-        return data.toString();
+        return String.format("[BSTNode: %s]", data.toString());
     }
 }
