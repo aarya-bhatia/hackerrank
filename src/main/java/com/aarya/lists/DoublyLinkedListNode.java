@@ -28,19 +28,38 @@ public class DoublyLinkedListNode<T extends Comparable<T>> implements Comparable
     }
 
     public DoublyLinkedListNode<T> getNext() {
-        return this.getNext();
+        return this.hasNext() ? this.getNext() : null;
     }
 
     public DoublyLinkedListNode<T> getPrev() {
-        return this.getPrev();
+        return this.hasPrev() ? this.getPrev() : null;
     }
 
     public T getData() {
-        return this.getData();
+        return this.hasData() ? this.getData() : null;
+    }
+
+    private boolean hasData() {
+        return this.getData() != null;
     }
 
     @Override
     public int compareTo(DoublyLinkedListNode<T> otherNode) {
         return this.getData().compareTo(otherNode.getData());
+    }
+
+    public static <E extends Comparable<E>> DoublyLinkedListNode<E> reverseDoublyLinkedList(DoublyLinkedListNode<E> head) {
+        DoublyLinkedListNode<E> current = head;
+        if (head == null) { return null; }
+        while (current != null) {
+            head = current;
+            System.out.println("current data = " + current.getData());
+            DoublyLinkedListNode<E> oldNext = current.getNext();
+            DoublyLinkedListNode<E> oldPrev = current.getPrev();
+            current.setPrev(oldNext); // new prev
+            current.setNext(oldPrev); // new next
+            current = oldNext;
+        }
+        return head;
     }
 }

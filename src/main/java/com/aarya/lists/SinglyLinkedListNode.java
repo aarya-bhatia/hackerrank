@@ -24,4 +24,8 @@ public class SinglyLinkedListNode {
     public void setNext(SinglyLinkedListNode next) {
         this.next = next;
     }
+
+    public boolean hasNext() {
+        return next != null;
+    }
 }

@@ -5,8 +5,8 @@ public class MyLinkedList {
     static void printLinkedList(SinglyLinkedListNode head) {
         SinglyLinkedListNode current = head;
         while (current != null) {
-            System.out.println(current.data);
-            current = current.next;
+            System.out.println(current.getData());
+            current = current.getNext();
         }
     }
 
@@ -18,11 +18,11 @@ public class MyLinkedList {
         }
         SinglyLinkedListNode current = head;
         while (current != null) {
-            if (current.next == null) {
-                current.next = newNode;
+            if (current.hasNext()) {
+                current.setNext(newNode);
                 break;
             }
-            current = current.next;
+            current = current.getNext();
         }
         return head;
     }
@@ -35,7 +35,7 @@ public class MyLinkedList {
             return head;
         }
 
-        node.next = head;
+        node.setNext(head);
         head = node;
         return head;
     }
@@ -43,13 +43,13 @@ public class MyLinkedList {
     static void insertNodeAtPosition(int current, int target, SinglyLinkedListNode currentNode,
             SinglyLinkedListNode nodeToAdd) {
         if (current == target - 1) {
-            SinglyLinkedListNode temp = currentNode.next;
-            currentNode.next = nodeToAdd;
-            nodeToAdd.next = temp;
+            SinglyLinkedListNode temp = currentNode.getNext();
+            currentNode.setNext(nodeToAdd);
+            nodeToAdd.setNext(temp);
             return;
         }
         int nextPosition = current + 1;
-        SinglyLinkedListNode nextInPath = currentNode.next;
+        SinglyLinkedListNode nextInPath = currentNode.getNext();
         insertNodeAtPosition(nextPosition, target, nextInPath, nodeToAdd);
     }
 
@@ -65,18 +65,18 @@ public class MyLinkedList {
 
     static void delete(int currentPosition, int targetPosition, SinglyLinkedListNode currentNode) {
         if (currentPosition == targetPosition - 1) {
-            SinglyLinkedListNode nodeToDelete = currentNode.next;
-            SinglyLinkedListNode nodeAfterThat = nodeToDelete.next;
-            currentNode.next = nodeAfterThat;
+            SinglyLinkedListNode nodeToDelete = currentNode.getNext();
+            SinglyLinkedListNode nodeAfterThat = nodeToDelete.getNext();
+            currentNode.setNext(nodeAfterThat);
         } else {
-            delete(currentPosition + 1, targetPosition, currentNode.next);
+            delete(currentPosition + 1, targetPosition, currentNode.getNext());
         }
     }
 
     static SinglyLinkedListNode deleteNode(SinglyLinkedListNode head, int position) {
         if (position == 0) {
             // SinglyLinkedListNode temp = head;
-            head = head.next;
+            head = head.getNext();
             return head;
         }
         delete(0, position, head);
@@ -84,19 +84,19 @@ public class MyLinkedList {
     }
 
     static void reversePrint(SinglyLinkedListNode head) {
-        if (head.next != null) {
-            reversePrint(head.next);
+        if (head.hasNext()) {
+            reversePrint(head.getNext());
         }
 
-        System.out.println(head.data);
+        System.out.println(head.getData());
     }
 
     static SinglyLinkedListNode reverse(SinglyLinkedListNode current) {
         SinglyLinkedListNode reverseHead = null;
-        SinglyLinkedListNode iterator = current;
+        SinglyLinkedListNode iterator;
         while (current != null) {
-            iterator = current.next;
-            current.next = reverseHead;
+            iterator = current.getNext();
+            current.setNext(reverseHead);
             reverseHead = current;
             current = iterator;
         }
@@ -108,11 +108,11 @@ public class MyLinkedList {
         SinglyLinkedListNode iterator2 = head2;
 
         while (iterator1 != null && iterator2 != null) {
-            if (iterator1.data != iterator2.data) {
+            if (iterator1.getData() != iterator2.getData()) {
                 return false;
             }
-            iterator1 = iterator1.next;
-            iterator2 = iterator2.next;
+            iterator1 = iterator1.getNext();
+            iterator2 = iterator2.getNext();
         }
 
         return iterator1 == null && iterator2 == null;
@@ -123,29 +123,29 @@ public class MyLinkedList {
         SinglyLinkedListNode itr1 = head1;
         SinglyLinkedListNode itr2 = head2;
 
-        DoublyLinkedList mergedList = new DoublyLinkedList();
+        SinglyLinkedList mergedList = new SinglyLinkedList();
 
         while (itr1 != null && itr2 != null) {
-            if (itr1.data < itr2.data) {
+            if (itr1.getData() < itr2.getData()) {
                 mergedList.addLast(itr1);
-                itr1 = itr1.next;
+                itr1 = itr1.getNext();
             } else {
                 mergedList.addLast(itr2);
-                itr2 = itr2.next;
+                itr2 = itr2.getNext();
             }
         }
 
         if (itr1 != null) {
             while (itr1 != null) {
                 mergedList.addLast(itr1);
-                itr1 = itr1.next;
+                itr1 = itr1.getNext();
             }
         }
 
         if (itr2 != null) {
             while (itr2 != null) {
                 mergedList.addLast(itr2);
-                itr2 = itr2.next;
+                itr2 = itr2.getNext();
             }
         }
 
@@ -156,25 +156,25 @@ public class MyLinkedList {
         SinglyLinkedListNode runner = head;
         SinglyLinkedListNode current = head;
         for (int i = 0; i <= positionFromTail; i++) {
-            runner = runner.next;
+            runner = runner.getNext();
         }
         while (runner != null) {
-            runner = runner.next;
-            current = current.next;
+            runner = runner.getNext();
+            current = current.getNext();
         }
-        return current != null ? current.data : 0;
+        return current != null ? current.getData() : 0;
     }
 
     static SinglyLinkedListNode removeDuplicates(SinglyLinkedListNode head) {
         SinglyLinkedListNode before = head;
-        SinglyLinkedListNode after = before.next;
+        SinglyLinkedListNode after = before.getNext();
         while (after != null) {
-            if (before.data == after.data) {
-                before.next = after.next;
-                after = before.next;
+            if (before.getData() == after.getData()) {
+                before.setNext(after.getNext());
+                after = before.getNext();
             } else {
                 before = after;
-                after = after.next;
+                after = after.getNext();
             }
         }
         return head;
@@ -183,9 +183,9 @@ public class MyLinkedList {
     static boolean hasCycle(SinglyLinkedListNode head) {
         SinglyLinkedListNode slow = head;
         SinglyLinkedListNode fast = head;
-        while (fast != null && fast.next != null && slow != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+        while (fast != null && fast.getNext() != null && slow != null) {
+            slow = slow.getNext();
+            fast = fast.getNext().getNext();
 
             if (slow == fast) {
                 return true;
@@ -198,36 +198,22 @@ public class MyLinkedList {
     static int findMergeNode(SinglyLinkedListNode head1, SinglyLinkedListNode head2) {
         SinglyLinkedListNode it1 = head1;
         while (it1 != null) {
-            SinglyLinkedListNode temp = it1.next;
-            it1.next = null;
+            SinglyLinkedListNode temp = it1.getNext();
+            it1.setNext(null);
             it1 = temp;
         }
 
         it1 = head2;
         while (it1 != null) {
-            if (it1.next == null) {
-                return it1.data;
+            if (it1.hasNext()) {
+                return it1.getData();
             }
-            it1 = it1.next;
+            it1 = it1.getNext();
         }
 
         return 0;
     }
 
-    static DoublyLinkedListNode reverse(DoublyLinkedListNode head) {
-        DoublyLinkedListNode current = head;
-        if (head == null)
-            return head;
-        while (current != null) {
-            head = current;
-            System.out.println("current data = " + current.getData());
-            DoublyLinkedListNode oldNext = current.getNext();
-            DoublyLinkedListNode oldPrev = current.getPrev();
-            current.setPrev(oldNext); // new prev
-            current.setNext(oldPrev); // new next
-            current = oldNext;
-        }
-        return head;
-    }
+
 
 }
